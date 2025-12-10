@@ -1,0 +1,25 @@
+# Text files
+*.txt
+textos_site.txt
+textos_site_en.txt
+
+# Python files
+*.py
+translate_to_english.py
+
+# Documentation
+README.md
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Claude Code settings
+.claude/

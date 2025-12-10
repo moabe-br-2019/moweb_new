@@ -3,7 +3,11 @@
     "allow": [
       "Bash(git init:*)",
       "Bash(git remote add:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: Mowebstudio website\n\n- Hero section com typewriter effect\n- Seções: Soluções, AI Development, Stack, Processo, Portfólio, Contato\n- Menu de navegação responsivo com scroll spy\n- Integração com Baserow API para portfólio e contatos\n- Design glassmorphism com animações\n- Favicon customizado\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(dir:*)"
     ]
   }
 }
