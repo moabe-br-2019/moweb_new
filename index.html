@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mowebstudio | Apps e Automações No-Code</title>
+    <meta name="description" content="Desenvolvimento de aplicativos com Bubble e Supabase. Automações inteligentes com n8n. Transforme sua ideia em software escalável.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/favicon.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuração de Cores Personalizadas -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            yellow: '#FFD700',     /* Amarelo Ouro */
+                            yellowHover: '#E6C200',
+                            black: '#0F0F0F',      /* Preto Quase Puro */
+                            darkGray: '#1A1A1A',
+                            lightGray: '#F5F5F5'
+                        }
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'marquee': 'marquee 25s linear infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- CSS Externo -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="text-brand-black font-sans antialiased selection:bg-brand-yellow selection:text-black">
+    
+    <!-- Noise Overlay -->
+    <div class="bg-noise"></div>
+
+    <!-- Elementos de Fundo (Blobs Animados) -->
+    <div class="fixed inset-0 overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-yellow/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-purple-300/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-32 left-1/3 w-96 h-96 bg-pink-300/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-300 top-4 px-4" id="navbar">
+        <div class="max-w-6xl mx-auto glass-card rounded-2xl px-6 py-4 flex justify-between items-center shadow-lg hover:shadow-xl transition-shadow">
+            <!-- Logo -->
+            <div class="flex items-center gap-2 cursor-pointer group" onclick="window.scrollTo(0,0)">
+                <div class="w-10 h-10 bg-brand-black flex items-center justify-center rounded-lg group-hover:rotate-12 transition-transform duration-300">
+                    <span class="text-brand-yellow font-display font-bold text-xl">M</span>
+                </div>
+                <span class="font-display font-bold text-xl tracking-tight group-hover:text-brand-yellowHover transition-colors">Mowebstudio</span>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-1 items-center bg-gray-100/50 p-1 rounded-full border border-gray-200/50">
+                <a href="#" class="px-5 py-2 rounded-full text-sm font-medium hover:bg-white hover:shadow-sm transition-all text-gray-600 hover:text-black">Home</a>
+                <a href="#solucoes" class="px-5 py-2 rounded-full text-sm font-medium hover:bg-white hover:shadow-sm transition-all text-gray-600 hover:text-black">Soluções</a>
+                <a href="#ai-development" class="px-5 py-2 rounded-full text-sm font-medium hover:bg-white hover:shadow-sm transition-all text-gray-600 hover:text-black flex items-center gap-1">
+                    <i class="ph-fill ph-sparkle text-brand-yellow"></i> AI Dev
+                </a>
+                <a href="#tecnologias" class="px-5 py-2 rounded-full text-sm font-medium hover:bg-white hover:shadow-sm transition-all text-gray-600 hover:text-black">Stack</a>
+                <a href="#processo" class="px-5 py-2 rounded-full text-sm font-medium hover:bg-white hover:shadow-sm transition-all text-gray-600 hover:text-black">Método</a>
+                <a href="#portfolio" class="px-5 py-2 rounded-full text-sm font-medium hover:bg-white hover:shadow-sm transition-all text-gray-600 hover:text-black">Portfólio</a>
+            </div>
+
+            <a href="#contato" class="hidden md:block bg-brand-black text-white px-6 py-2.5 rounded-xl font-bold transition-all hover:bg-brand-yellow hover:text-black hover:scale-105 shadow-lg">
+                Diga Oi 🤚
+            </a>
+
+            <!-- Mobile Button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="p-2 text-black hover:bg-gray-100 rounded-lg">
+                    <i class="ph ph-list text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu (Glass) -->
+        <div id="mobile-menu" class="hidden absolute top-20 left-4 right-4 glass-card rounded-2xl p-4 flex-col gap-2 shadow-2xl origin-top animate-in slide-in-from-top-4 duration-200">
+            <a href="#" class="p-4 rounded-xl hover:bg-white/50 font-medium">Home</a>
+            <a href="#solucoes" class="p-4 rounded-xl hover:bg-white/50 font-medium">Soluções</a>
+            <a href="#ai-development" class="p-4 rounded-xl hover:bg-white/50 font-bold flex items-center gap-2"><i class="ph-fill ph-sparkle text-brand-yellow"></i> AI Development</a>
+            <a href="#tecnologias" class="p-4 rounded-xl hover:bg-white/50 font-medium">Stack</a>
+            <a href="#processo" class="p-4 rounded-xl hover:bg-white/50 font-medium">Método</a>
+            <a href="#portfolio" class="p-4 rounded-xl hover:bg-white/50 font-medium">Portfólio</a>
+            <a href="#contato" class="p-4 rounded-xl bg-brand-black text-white font-bold text-center mt-2">Iniciar Projeto</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Text Content -->
+                <div class="text-left reveal active">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border-brand-yellow/30 text-xs font-bold uppercase tracking-widest mb-8 text-gray-600">
+                        <span class="w-2 h-2 rounded-full bg-brand-yellow animate-pulse"></span>
+                        No-Code & Low-Code Studio
+                    </div>
+                    
+                    <h1 class="font-display font-black text-5xl sm:text-7xl leading-[0.95] mb-8 tracking-tight">
+                        <span id="static-text" class="text-brand-black block mb-2"></span>
+                        <span class="inline-flex items-center bg-brand-black text-white px-4 py-1 rounded-lg transform -rotate-1 shadow-2xl text-3xl sm:text-5xl">
+                            <span id="typewriter-text" class="text-brand-yellow"></span>
+                            <span class="text-brand-yellow cursor-blink ml-1">|</span>
+                        </span>
+                    </h1>
+                    
+                    <p class="text-xl text-gray-600 mb-10 max-w-lg leading-relaxed">
+                        A <strong class="text-brand-black">Mowebstudio</strong> combina desenvolvimento ágil e automação inteligente para otimizar processos, integrar sistemas e acelerar a evolução digital do seu negócio.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#contato" class="group relative px-8 py-4 bg-brand-black text-white rounded-xl font-bold text-lg overflow-hidden shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1">
+                            <div class="absolute inset-0 w-full h-full bg-brand-yellow translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+                            <span class="relative group-hover:text-black flex items-center gap-2">
+                                Iniciar Agora <i class="ph-bold ph-arrow-right"></i>
+                            </span>
+                        </a>
+                        <a href="#tecnologias" class="px-8 py-4 glass-card text-black rounded-xl font-bold text-lg hover:bg-white transition-all flex items-center gap-2">
+                            Ver Stack
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Visual Element (Glass Stack) -->
+                <div class="relative h-[500px] hidden lg:block reveal" style="transition-delay: 200ms;">
+                    <!-- Floating Cards Animation -->
+                    <div class="absolute top-10 right-10 w-72 glass-card p-6 rounded-2xl z-20 animate-float shadow-2xl border-l-4 border-l-brand-yellow">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center font-bold">B</div>
+                            <span class="text-xs font-bold text-green-500 bg-green-100 px-2 py-1 rounded-full">Live</span>
+                        </div>
+                        <div class="h-2 w-24 bg-gray-200 rounded mb-2"></div>
+                        <div class="h-2 w-full bg-gray-100 rounded"></div>
+                    </div>
+
+                    <div class="absolute top-40 left-10 w-80 glass-card-dark p-6 rounded-2xl z-30 animate-float shadow-2xl" style="animation-delay: 2s;">
+                        <div class="flex items-center gap-3 mb-4">
+                            <i class="ph-fill ph-lightning text-brand-yellow text-2xl"></i>
+                            <span class="text-white font-bold">Automação Ativa</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-2 text-gray-400 text-sm">
+                                <i class="ph ph-check-circle text-brand-yellow"></i> Novo Lead Capturado
+                            </div>
+                            <div class="flex items-center gap-2 text-gray-400 text-sm">
+                                <i class="ph ph-check-circle text-brand-yellow"></i> Dados Enviados (Supabase)
+                            </div>
+                            <div class="flex items-center gap-2 text-gray-400 text-sm">
+                                <i class="ph ph-check-circle text-brand-yellow"></i> Email Enviado
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="absolute bottom-20 right-20 w-64 glass-card p-5 rounded-2xl z-10 animate-float shadow-lg blur-[1px] opacity-80" style="animation-delay: 1s;">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded bg-green-500 flex items-center justify-center text-white font-bold">S</div>
+                            <div>
+                                <div class="h-2 w-20 bg-gray-300 rounded mb-1"></div>
+                                <div class="h-1.5 w-12 bg-gray-200 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section (Glassmorphism Dark) -->
+    <section id="solucoes" class="relative py-32 bg-brand-black text-white overflow-hidden">
+        <!-- Abstract Shapes -->
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-yellow/5 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 reveal">
+                <div class="max-w-xl">
+                    <h2 class="text-brand-yellow font-display font-bold uppercase tracking-widest text-sm mb-4">Nossa Expertise</h2>
+                    <h3 class="font-display text-4xl md:text-5xl font-bold leading-tight">Soluções que escalam com seu negócio.</h3>
+                </div>
+                <p class="text-gray-400 max-w-sm mt-6 md:mt-0">
+                    Da concepção ao código, entregamos produtos digitais completos focados em performance e usabilidade.
+                </p>
+            </div>
+
+            <!-- Grid Layout -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="glass-card-dark p-10 rounded-3xl hover:border-brand-yellow/50 transition-colors group reveal">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="p-3 bg-white/5 rounded-xl group-hover:bg-brand-yellow group-hover:text-black transition-colors duration-300">
+                            <i class="ph ph-app-window text-4xl"></i>
+                        </div>
+                        <i class="ph-bold ph-arrow-up-right text-2xl text-gray-500 group-hover:text-brand-yellow transition-colors"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-3 font-display">Desenvolvimento de Apps</h4>
+                    <p class="text-gray-400 leading-relaxed text-lg">
+                        SaaS, Marketplaces e CRMs personalizados. Usamos <strong>Bubble</strong> para entregar interfaces pixel-perfect. Diferente de templates prontos, criamos a arquitetura pensando no futuro do seu produto.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card-dark p-10 rounded-3xl hover:border-brand-yellow/50 transition-colors group reveal" style="transition-delay: 100ms;">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="p-3 bg-white/5 rounded-xl group-hover:bg-brand-yellow group-hover:text-black transition-colors duration-300">
+                            <i class="ph ph-database text-4xl"></i>
+                        </div>
+                        <i class="ph-bold ph-arrow-up-right text-2xl text-gray-500 group-hover:text-brand-yellow transition-colors"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-3 font-display">Backend & Dados</h4>
+                    <p class="text-gray-400 leading-relaxed text-lg">
+                        Estruturas robustas com <strong>Supabase</strong>. Autenticação segura e dados em tempo real.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card-dark p-10 rounded-3xl hover:border-brand-yellow/50 transition-colors group reveal" style="transition-delay: 200ms;">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="p-3 bg-white/5 rounded-xl group-hover:bg-brand-yellow group-hover:text-black transition-colors duration-300">
+                            <i class="ph ph-arrows-split text-4xl"></i>
+                        </div>
+                        <i class="ph-bold ph-arrow-up-right text-2xl text-gray-500 group-hover:text-brand-yellow transition-colors"></i>
+                    </div>
+                    <h4 class="text-2xl font-bold mb-3 font-display">Automações (n8n)</h4>
+                    <p class="text-gray-400 leading-relaxed text-lg">
+                        Conectamos seu app a qualquer API. Automações de marketing e financeiro complexas.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Section (Futuristic Glass) -->
+    <section id="ai-development" class="py-32 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="glass-card rounded-[3rem] p-8 md:p-16 border border-white/40 shadow-2xl relative overflow-hidden reveal">
+                
+                <!-- Inner Gradient -->
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-transparent via-brand-yellow to-transparent opacity-50"></div>
+
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 border border-black/10 text-xs font-bold uppercase mb-6">
+                            <i class="ph-fill ph-brain text-brand-black"></i>
+                            AI-First Development
+                        </div>
+                        
+                        <h2 class="font-display text-4xl md:text-6xl font-black mb-6 leading-tight">
+                            O futuro é <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-yellowHover to-orange-500">Inteligente</span>.
+                        </h2>
+                        
+                        <p class="text-gray-600 text-lg mb-8 leading-relaxed">
+                            Integramos LLMs (GPT-4, Claude) diretamente no seu fluxo de trabalho. Crie apps que entendem, aprendem e respondem aos seus usuários.
+                        </p>
+
+                        <ul class="space-y-4">
+                            <li class="flex items-center gap-4 group">
+                                <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                                    <i class="ph-fill ph-robot text-brand-yellowHover"></i>
+                                </div>
+                                <span class="font-medium text-gray-800">Assistentes Virtuais & Chatbots</span>
+                            </li>
+                            <li class="flex items-center gap-4 group">
+                                <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                                    <i class="ph-fill ph-chart-bar text-brand-yellowHover"></i>
+                                </div>
+                                <span class="font-medium text-gray-800">Análise Preditiva de Dados</span>
+                            </li>
+                            <li class="flex items-center gap-4 group">
+                                <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                                    <i class="ph-fill ph-magic-wand text-brand-yellowHover"></i>
+                                </div>
+                                <span class="font-medium text-gray-800">Geração de Conteúdo Automática</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Code Block Visualization -->
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-brand-yellow to-purple-500 rounded-2xl blur-xl opacity-30 transform rotate-3"></div>
+                        <div class="bg-[#1E1E1E] rounded-2xl p-6 shadow-2xl relative border border-gray-700">
+                            <div class="flex items-center justify-between border-b border-gray-700 pb-4 mb-4">
+                                <div class="flex gap-2">
+                                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                </div>
+                                <span class="text-xs text-gray-500 font-mono">ai_agent.ts</span>
+                            </div>
+                            <div class="font-mono text-sm space-y-2 text-gray-300">
+                                <div><span class="text-purple-400">const</span> <span class="text-blue-400">agent</span> = <span class="text-purple-400">new</span> Agent({</div>
+                                <div class="pl-4">model: <span class="text-green-400">'gpt-4-turbo'</span>,</div>
+                                <div class="pl-4">tools: [<span class="text-yellow-400">webSearch</span>, <span class="text-yellow-400">database</span>],</div>
+                                <div class="pl-4">instructions: <span class="text-green-400">"Analyze user data..."</span></div>
+                                <div>});</div>
+                                <br>
+                                <div><span class="text-gray-500">// Executing workflow...</span></div>
+                                <div><span class="text-purple-400">await</span> agent.<span class="text-blue-400">run</span>(task);</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Floating Badge -->
+                        <div class="absolute -right-6 top-10 bg-white px-4 py-2 rounded-lg shadow-xl font-bold text-sm animate-bounce flex items-center gap-2">
+                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                            AI Connected
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack (Marquee Effect) -->
+    <section id="tecnologias" class="py-20 bg-brand-black overflow-hidden relative border-y border-white/5">
+        <div class="mb-12 text-center relative z-10 px-4">
+            <h3 class="text-white font-display text-3xl font-bold">Stack Poderosa</h3>
+            <p class="text-gray-500 mt-2">As melhores ferramentas do mercado.</p>
+        </div>
+
+        <div class="relative w-full">
+            <!-- Gradient Masks for Marquee -->
+            <div class="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-brand-black to-transparent z-10"></div>
+            <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-brand-black to-transparent z-10"></div>
+
+            <!-- Marquee Content -->
+            <div class="flex w-[200%] animate-marquee">
+                <!-- Set 1 -->
+                <div class="flex items-center justify-around w-1/2 gap-8 px-4">
+                    <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                        <i class="ph-fill ph-globe text-4xl"></i> <span class="font-bold text-xl">Bubble</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-brand-yellow transition-colors">
+                        <i class="ph-fill ph-lightning text-4xl"></i> <span class="font-bold text-xl">n8n</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-green-400 transition-colors">
+                        <i class="ph-fill ph-database text-4xl"></i> <span class="font-bold text-xl">Supabase</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-blue-400 transition-colors">
+                        <i class="ph-fill ph-code text-4xl"></i> <span class="font-bold text-xl">React</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-purple-400 transition-colors">
+                        <i class="ph-fill ph-robot text-4xl"></i> <span class="font-bold text-xl">OpenAI</span>
+                    </div>
+                </div>
+                <!-- Set 2 (Duplicate for infinite loop) -->
+                <div class="flex items-center justify-around w-1/2 gap-8 px-4">
+                    <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                        <i class="ph-fill ph-globe text-4xl"></i> <span class="font-bold text-xl">Bubble</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-brand-yellow transition-colors">
+                        <i class="ph-fill ph-lightning text-4xl"></i> <span class="font-bold text-xl">n8n</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-green-400 transition-colors">
+                        <i class="ph-fill ph-database text-4xl"></i> <span class="font-bold text-xl">Supabase</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-blue-400 transition-colors">
+                        <i class="ph-fill ph-code text-4xl"></i> <span class="font-bold text-xl">React</span>
+                    </div>
+                    <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-purple-400 transition-colors">
+                        <i class="ph-fill ph-robot text-4xl"></i> <span class="font-bold text-xl">OpenAI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section (Interactive Vertical Timeline) -->
+    <section id="processo" class="py-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16 reveal">
+            <h2 class="text-brand-black font-display font-black text-5xl md:text-6xl mb-4">Como trabalhamos</h2>
+            <p class="text-xl text-gray-500 max-w-2xl mx-auto">Uma metodologia ágil e transparente, desenhada para tirar ideias do papel com velocidade.</p>
+        </div>
+
+        <div class="relative w-full">
+            <!-- Timeline Line (Fica fixa ao fundo) -->
+            <div class="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-gray-200 to-transparent"></div>
+            
+            <!-- Barra de Progresso Ativa (Opcional, preenche conforme scroll) -->
+            <div class="absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-brand-yellow origin-top scale-y-0 transition-transform duration-100 sticky top-1/2 opacity-0 md:opacity-100 h-full"></div>
+
+            <!-- Step 1: Imersão -->
+            <div class="relative flex flex-col md:flex-row items-center justify-between min-h-[40vh] timeline-step group" id="step-1">
+                <div class="w-full md:w-5/12 text-center md:text-right pr-0 md:pr-12 mb-6 md:mb-0 order-2 md:order-1">
+                    <div class="process-card p-8 md:p-10 rounded-[2rem]">
+                        <h3 class="text-2xl md:text-3xl font-bold font-display mb-3 text-brand-black">Imersão & Estratégia</h3>
+                        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+                            Entendemos seu modelo de negócio, dores e objetivos. Definimos o <strong>MVP ideal</strong> para validar sua ideia rapidamente, sem desperdício de recursos.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Number Circle -->
+                <div class="absolute left-1/2 top-0 md:top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl z-20 timeline-number border-4 order-1 md:order-2">
+                    1
+                </div>
+                
+                <div class="w-full md:w-5/12 pl-0 md:pl-12 order-3 md:order-3 hidden md:block">
+                    <!-- Espaço vazio para manter grid -->
+                </div>
+            </div>
+
+            <!-- Step 2: Construção -->
+            <div class="relative flex flex-col md:flex-row items-center justify-between min-h-[40vh] timeline-step group" id="step-2">
+                <div class="w-full md:w-5/12 pr-0 md:pr-12 hidden md:block order-2 md:order-1"></div>
+
+                <!-- Number Circle -->
+                <div class="absolute left-1/2 top-0 md:top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl z-20 timeline-number border-4 order-1 md:order-2">
+                    2
+                </div>
+
+                <div class="w-full md:w-5/12 pl-0 md:pl-12 order-3 md:order-3">
+                    <div class="process-card p-8 md:p-10 rounded-[2rem]">
+                        <h3 class="text-2xl md:text-3xl font-bold font-display mb-3 text-brand-black">Construção Ágil</h3>
+                        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+                            Desenvolvimento veloz com <strong>Bubble e Supabase</strong>. Integração de APIs e Inteligência Artificial. Você acompanha cada sprint de evolução em tempo real.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Lançamento -->
+            <div class="relative flex flex-col md:flex-row items-center justify-between min-h-[40vh] timeline-step group" id="step-3">
+                <div class="w-full md:w-5/12 text-center md:text-right pr-0 md:pr-12 mb-6 md:mb-0 order-2 md:order-1">
+                    <div class="process-card p-8 md:p-10 rounded-[2rem]">
+                        <h3 class="text-2xl md:text-3xl font-bold font-display mb-3 text-brand-black">Lançamento & Escala</h3>
+                        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+                            Testes rigorosos, deploy em produção e treinamento. Seu app entregue pronto para escalar e faturar <strong>desde o primeiro dia</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Number Circle -->
+                <div class="absolute left-1/2 top-0 md:top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full flex items-center justify-center font-bold text-2xl z-20 timeline-number border-4 order-1 md:order-2">
+                    3
+                </div>
+
+                <div class="w-full md:w-5/12 pl-0 md:pl-12 order-3 md:order-3 hidden md:block"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section (Redesigned per Image) -->
+    <section id="portfolio" class="py-32 relative overflow-hidden bg-brand-black">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Header -->
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-white font-display font-black text-5xl md:text-6xl mb-4">Portfólio</h2>
+                <p class="text-xl text-gray-400 max-w-2xl mx-auto">Projetos selecionados que definem o futuro digital.</p>
+            </div>
+
+            <!-- Portfolio Carousel Layout (Large Cards) -->
+            <div class="relative group">
+                <!-- Navigation Buttons (Hover Reveal style) -->
+                <button id="prev-btn" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-16 h-16 rounded-full portfolio-tag flex items-center justify-center text-white hover:bg-white/20 transition-all opacity-0 disabled:opacity-0 disabled:cursor-not-allowed backdrop-blur-md">
+                    <i class="ph-bold ph-arrow-left text-2xl"></i>
+                </button>
+                <button id="next-btn" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-16 h-16 rounded-full portfolio-tag flex items-center justify-center text-white hover:bg-white/20 transition-all backdrop-blur-md">
+                    <i class="ph-bold ph-arrow-right text-2xl"></i>
+                </button>
+
+                <!-- Carousel container -->
+                <div id="carousel-wrapper" class="overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory pb-10">
+                    <div class="flex gap-8 px-4 md:px-[10vw]" id="carousel-container">
+                        <!-- Portfolio items will be loaded dynamically from Baserow API -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Button -->
+            <div class="text-center mt-12 reveal">
+                <a href="#contato" class="inline-flex items-center gap-3 px-8 py-4 bg-brand-yellow text-black rounded-xl font-bold text-lg hover:bg-white hover:text-black transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,215,0,0.2)] group">
+                    Iniciar Meu Projeto
+                    <i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact (Floating Glass) -->
+    <section id="contato" class="py-24 px-4">
+        <div class="max-w-4xl mx-auto glass-card-dark rounded-[2.5rem] p-8 md:p-16 text-center relative overflow-hidden reveal shadow-2xl">
+            <!-- Blobs Behind -->
+            <div class="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
+            <div class="absolute -top-24 -left-24 w-64 h-64 bg-brand-yellow rounded-full blur-[80px] opacity-20"></div>
+
+            <div class="relative z-10">
+                <h2 class="font-display text-4xl md:text-6xl font-bold text-white mb-6">
+                    Vamos tirar isso do papel?
+                </h2>
+                <p class="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
+                    Preencha o formulário para receber uma proposta ou fale diretamente conosco.
+                </p>
+
+                <!-- Formulário de Contato -->
+                <form id="contact-form" class="max-w-md mx-auto space-y-4 text-left">
+                    <div>
+                        <input type="text" id="contact-name" name="name" placeholder="Seu Nome" required class="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all backdrop-blur-sm">
+                    </div>
+
+                    <div>
+                        <input type="email" id="contact-email" name="email" placeholder="Seu E-mail Profissional" required class="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all backdrop-blur-sm">
+                    </div>
+
+                    <div>
+                        <textarea id="contact-notes" name="notes" placeholder="Conte um pouco sobre o projeto..." rows="3" class="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow transition-all backdrop-blur-sm"></textarea>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="w-full bg-brand-yellow hover:bg-brand-yellowHover text-black font-bold text-lg py-4 rounded-xl transition-transform transform active:scale-95 shadow-[0_0_20px_rgba(255,215,0,0.3)]">
+                        Solicitar Orçamento
+                    </button>
+                </form>
+
+                <!-- Botão WhatsApp -->
+                <div class="mt-8 pt-8 border-t border-white/10">
+                    <p class="text-gray-400 mb-4 text-sm">Prefere uma conversa mais rápida?</p>
+                    <a href="https://wa.me/5521965088163?text=Olá! Gostaria de saber mais sobre os serviços da Mowebstudio." target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl transition-all border border-white/10 backdrop-blur-md group hover:border-green-500/50">
+                        <i class="ph-fill ph-whatsapp-logo text-green-400 text-xl group-hover:scale-110 transition-transform"></i>
+                        Chamar no WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 py-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-brand-black flex items-center justify-center rounded-lg">
+                    <span class="text-brand-yellow font-bold font-display">M</span>
+                </div>
+                <span class="font-bold text-lg text-gray-900 font-display">Mowebstudio</span>
+            </div>
+            
+            <div class="text-gray-500 text-sm">
+                &copy; <span id="year"></span> Mowebstudio. Feito com <i class="ph-fill ph-heart text-red-500"></i>
+            </div>
+
+            <div class="flex gap-4">
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-brand-black hover:text-brand-yellow transition-all">
+                    <i class="ph-fill ph-instagram-logo text-xl"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-brand-black hover:text-brand-yellow transition-all">
+                    <i class="ph-fill ph-linkedin-logo text-xl"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Sucesso/Erro -->
+    <div id="modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] hidden">
+        <div class="glass-card-dark rounded-3xl p-8 md:p-12 max-w-md mx-4 text-center relative animate-in zoom-in duration-300">
+            <button id="close-modal" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all">
+                <i class="ph-bold ph-x text-xl"></i>
+            </button>
+
+            <div id="modal-content">
+                <!-- Conteúdo será inserido via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
